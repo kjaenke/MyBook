@@ -1,10 +1,11 @@
-﻿@using TestSite.Models
+﻿@using TestSite.Infrastructure
+@using TestSite.Models
+@using TestSite.Persistence
 @{
-    User actualluser = new User();
-    if (Session["User"] != null)
-    {
-        actualluser = (User) Session["User"];
-    }
+    
+    UnitOfWork unit = new UnitOfWork(new PlutoContext());
+    int id = (int) ViewData["UserId"];
+    User actualluser = unit.Users.Get(id);
     ViewBag.Title = actualluser.Firstname;
 }
 

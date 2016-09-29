@@ -82,15 +82,16 @@
                 {
                     if (actualluser.Roles == "Admin")
                     {
-                        <li style="color: red">@Html.ActionLink("✧" + actualluser.Firstname + "✧", "Profiles", "User")</li>
+                        <li><a href="/User/Profiles?id=@actualluser.Id">✧@actualluser.Firstname✧</a></li>
                     }
                     if (actualluser.Roles == "Support")
                     {
-                        <li style="color: blue">@Html.ActionLink("⚪" + actualluser.Firstname + "⚪", "Profiles", "User")</li>
+                        <li><a href="/User/Profiles?id=@actualluser.Id">⚪@actualluser.Firstname⚪</a></li>
+                        
                     }
                     if (actualluser.Roles == "User")
                     {
-                        <li style="color: black">@Html.ActionLink("||" + actualluser.Firstname + "||", "Profiles", "User")</li>
+                        <li><a href="/User/Profiles?id=@actualluser.Id">||@actualluser.Firstname||</a></li>
                     }
 
                     <li>@Html.ActionLink("Kontaktbuch", "Index", "Contact")</li>

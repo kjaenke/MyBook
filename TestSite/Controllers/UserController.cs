@@ -2,6 +2,7 @@
 using System.Security.Cryptography;
 using System.Text;
 using System.Web.Mvc;
+using System.Web.WebPages;
 using TestSite.Infrastructure;
 using TestSite.Models;
 using TestSite.Persistence;
@@ -118,8 +119,32 @@ namespace TestSite.Controllers
             return Redirect("/User/Login");
         }
 
-        public ActionResult Profiles()
+        public ActionResult Profiles(string id)
         {
+            User user = new User();
+            if (Session["User"] != null)
+            {
+                user = (User) Session["User"];
+            }
+            if (id == null)
+            {
+                if (user.Id != null)
+                {
+                    ViewData["UserId"] = user.Id;
+                    return View();
+                }
+                else
+                {
+                    return Redirect("/User/UserList");
+                }
+            }
+            UnitOfWork unit = new UnitOfWork(new PlutoContext());
+
+            if (unit.Users.Get(id.AsInt()) == null)
+            {
+                return Redirect("User/UserList");
+            }
+            ViewData["UserId"] = id.AsInt();
             return View();
         }
 
