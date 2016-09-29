@@ -1,0 +1,39 @@
+﻿@using TestSite.Infrastructure
+@using TestSite.Models
+@using TestSite.Persistence
+
+@{
+    ViewBag.Title = "Bearbeite Topic";
+    Topic topic = (Topic) ViewData["EditTopic"];
+  
+}
+@using (Html.BeginForm("SaveEditTopic", "Forum"))
+{
+    <form class="form-horizontal">
+        <fieldset>
+            <legend>@topic.Name</legend>
+            <input type="text" hidden value="@topic.TopicId" name="TopicId"/>
+            <input type="text" hidden value="@topic.ForumId" name="ForumId" />
+            <input type="text" hidden value="@topic.CreateId" name="CreateId" />
+            <input type="text" hidden value="false" name="Blocked" />
+            <div class="form-group">
+                <label for="inputName" class="col-lg-2 control-label">Name</label>
+                <div class="col-lg-10">
+                    <input type="text" class="form-control" id="inputName" name="Name" value="@topic.Name">
+                </div>
+            </div>
+            <div class="form-group">
+                <label for="textArea" class="col-lg-2 control-label">Inhalt</label>
+                <div class="col-lg-10">
+                    <textarea class="form-control" rows="3" id="textArea" name="Content">@topic.Content</textarea>
+                </div>
+            </div>
+            <div class="form-group">
+                <div class="col-lg-10 col-lg-offset-2">
+                    <button type="reset" class="btn btn-default">Abbrechen</button>
+                    <button type="submit" class="btn btn-primary">Erstellen</button>
+                </div>
+            </div>
+        </fieldset>
+    </form>
+}

@@ -1,0 +1,12 @@
+﻿@model TestSite.Models.User
+@{
+    ViewBag.Title = "Welcome";
+}
+
+
+
+<h1>Wilkommen @Model.Salutation @Model.Firstname @Model.Lastname,</h1>
+<h5>Ihr Benutzerkonto wurde erfolgreich registriert.</h5>
+
+<p class="btn btn-primary">@Html.ActionLink("Weiter zur Hauptseite", "Index","Forum")</p>
+

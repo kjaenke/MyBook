@@ -1,0 +1,191 @@
+﻿@using TestSite.Models
+@{
+    ViewBag.Title = "Mitglieder";
+    IEnumerable<User> user = (IEnumerable<User>) Session["UserList"];
+    User actuallUser = new User();
+    if (Session["User"] != null)
+    {
+        actuallUser = (User) Session["User"];
+    }
+}
+@{
+    int admin = 0;
+    int supp = 0;
+    int us = 0;
+}
+
+<h3>Registrierte Mitglieder</h3>
+
+<body>
+<fieldset>
+    <legend style="color: red">Administratoren</legend>
+
+    <table class="table table-striped table-hover ">
+        <tr>
+            <th style="width: 300px">Nr.</th>
+            <th style="width: 300px" hidden>Id</th>
+            <th style="width: 300px">Name</th>
+            <th style="width: 300px">Mail</th>
+
+            @if (actuallUser.Roles == "Admin")
+            {
+                <th style="width: 300px">Befördern/Dekradieren</th>
+                <th style="width: 300px"></th>
+            }
+        </tr>
+
+
+        @foreach (User use in user)
+        {
+            <tr class="active">
+                @if (use.Roles == "Admin")
+                {
+                    using (Html.BeginForm("UserRank", "User"))
+                    {
+                        admin++;
+                        <td style="width: 300px">@admin</td>
+                        <td style="width: 300px" hidden>
+                            <input type="text" name="Id" value="@use.Id"/>
+                        </td>
+                        <td style="width: 300px">@use.Firstname @use.Lastname</td>
+                        <td style="width: 300px">@use.Mail</td>
+                        if (actuallUser.Roles == "Admin")
+                        {
+                            <td style="width: 300px">
+                                <div class="form-group">
+                                    <div class="col-lg-10">
+                                        <select id="select" name="Funktion">
+                                            <option>Befördern</option>
+                                            <option>Dekradieren</option>
+                                        </select>
+                                    </div>
+                                </div>
+                            </td>
+                            <td style="width: 300px">
+                                <button  class="btn btn-default btn-xs" type="submit">Absenden</button>
+                            </td>
+                        }
+                    }
+                }
+            </tr>
+        }
+
+    </table><br/><br/>
+</fieldset>
+<fieldset>
+    <legend style="color: blue">Supporter</legend>
+
+    <table class="table table-striped table-hover ">
+        <tr>
+            <th style="width: 300px">Nr.</th>
+            <th style="width: 300px" hidden>Id</th>
+            <th style="width: 300px">Name</th>
+            <th style="width: 300px">Mail</th>
+
+            @if (actuallUser.Roles == "Admin")
+            {
+                <th style="width: 300px">Befördern/Dekradieren</th>
+                <th style="width: 300px"></th>
+            }
+        </tr>
+
+        @foreach (User use in user)
+        {
+            <tr class="active">
+                @if (use.Roles == "Support")
+                {
+                    using (Html.BeginForm("UserRank", "User"))
+                    {
+                        supp++;
+                        <td style="width: 300px">@supp</td>
+                        <td style="width: 300px" hidden>
+                            <input type="text" name="Id" value="@use.Id"/>
+                        </td>
+                        <td style="width: 300px">@use.Firstname @use.Lastname</td>
+                        <td style="width: 300px">@use.Mail</td>
+                        if (actuallUser.Roles == "Admin")
+                        {
+                            <td style="width: 300px">
+                                <select  name="Funktion">
+                                    <option>Befördern</option>
+                                    <option>Dekradieren</option>
+                                </select>
+                            </td>
+                            <td style="width: 300px">
+                                <button  class="btn btn-default btn-xs" type="submit">Absenden</button>
+                            </td>
+                        }
+                    }
+                }
+            </tr>
+        }
+
+    </table><br/><br/>
+</fieldset>
+<fieldset>
+    <legend style="color: black">Benutzer</legend>
+
+    <table class="table table-striped table-hover ">
+        <tr>
+            <th style="width: 300px">Nr.</th>
+            <th style="width: 300px" hidden>Id</th>
+            <th style="width: 300px">Name</th>
+            <th style="width: 300px">Mail</th>
+
+            @if (actuallUser.Roles == "Admin")
+            {
+                <th style="width: 300px">Befördern/Dekradieren</th>
+                <th style="width: 300px"></th>
+            }
+        </tr>
+        <tr class="active">
+        @foreach (User use in user)
+        {
+            <tr>
+                @if (use.Roles == "User")
+                {
+                    using (Html.BeginForm("UserRank", "User"))
+                    {
+                        us++;
+                        <td style="width: 300px">@us</td>
+                        <td style="width: 300px" hidden>
+                            <input type="text" name="Id" value="@use.Id"/>
+                        </td>
+                        <td style="width: 300px">@use.Firstname @use.Lastname</td>
+                        <td style="width: 300px">@use.Mail</td>
+                        if (actuallUser.Roles == "Admin")
+                        {
+                            <td style="width: 300px">
+                                <select  name="Funktion">
+                                    <option>Befördern</option>
+                                    <option>Dekradieren</option>
+                                </select>
+                            </td>
+                            <td style="width: 300px">
+                                <button  class="btn btn-default btn-xs" type="submit">Absenden</button>
+                            </td>
+                        }
+                    }
+                }
+            </tr>
+        }
+
+    </table><br/><br/>
+</fieldset>
+<fieldset>
+    <legend style="color: gray">Statistik</legend>
+    <table>
+        <tr>
+            @{
+                int sum = admin + supp + us;
+            }
+            <td style="width: 400px">Anzahl der registrierten Mitglieder:</td>
+            <td style="width: 400px; text-align: center">@sum</td>
+        </tr>
+    </table>
+</fieldset>
+
+</body>
+<footer>
+
+</footer>

@@ -1,0 +1,85 @@
+﻿@using TestSite.Models
+@{
+    ViewBag.Title = "NewContact";
+
+    User user = new User();
+    if (Session["User"] != null)
+    {
+        user = (User) Session["User"];
+    }
+}
+<head>
+    <title>
+        @ViewBag.Title
+    </title>
+    @*<link href="../../CSS/login.css" rel="stylesheet" type="text/css"/>*@
+</head>
+<body>
+
+
+
+@using (Html.BeginForm("SaveNewContact", "Contact"))
+{
+    <form class="form-horizontal">
+        <fieldset>
+            <legend>
+                Neuen Kontakt anlegen.
+            </legend>
+            <div class="form-group">
+                <label for="inputCreateById" class="col-lg-2 control-label">ErstellerId:</label>
+                <div class="col-lg-10">
+                    <input type="text" name="CreateById" disabled id="inputCreateById" value="@user.Id"/>
+                </div>
+            </div>
+            <div class="form-group">
+                <label for="inputFirstname" class="col-lg-2 control-label">Vorname:</label>
+                <div class="col-lg-10">
+                    <input type="text" name="Firstname" id="inputFirstname"/>
+                </div>
+            </div>
+            <div class="form-group">
+                <label for="inputLastname" class="col-lg-2 control-label">Nachname:</label>
+                <div class="col-lg-10">
+                    <input type="text" name="Lastname" id="inputLastname"/>
+                </div>
+            </div>
+            <div class="form-group">
+                <label for="inputStreetHouseNumber" class="col-lg-2 control-label">Straße und Hausnummer:</label>
+                <div class="col-lg-10">
+                    <input type="text" name="StreetHouseNumber" id="inputStreetHouseNumber"/>
+                </div>
+            </div>
+            <div class="form-group">
+                <label for="inputPlzAndOrt" class="col-lg-2 control-label">Postleitzahl und Ort:</label>
+                <div class="col-lg-10">
+                    <input type="text" name="PlzAndOrt" id="inputPlzAndOrt"/>
+                </div>
+            </div>
+            <div class="form-group">
+                <label for="inputTelephonNumber" class="col-lg-2 control-label">Telefon:</label>
+                <div class="col-lg-10">
+                    <input type="text" name="TelephonNumber" id="inputTelephonNumber"/>
+                </div>
+            </div>
+            <div class="form-group">
+                <label for="inputEMail" class="col-lg-2 control-label">eMail:</label>
+                <div class="col-lg-10">
+                    <input type="text" name="EMail" id="inputEMail"/>
+                </div>
+            </div>
+            <div class="form-group">
+                <label for="inputHomepage" class="col-lg-2 control-label">Homepage:</label>
+                <div class="col-lg-10">
+                    <input type="text" name="Homepage" id="inputHomepage"/>
+                </div>
+            </div>
+            <div class="form-group">
+                <div class="col-lg-10 col-lg-offset-2">
+                    <button type="reset" class="btn btn-default">Zurücksetzen</button>
+                    <button type="submit" class="btn btn-primary">Absenden</button>
+                </div>
+            </div>
+        </fieldset>
+    </form>
+}
+</body>

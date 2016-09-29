@@ -1,0 +1,78 @@
+﻿@using TestSite.Models
+@{
+    ViewBag.Title = "EditContact";
+
+
+
+   
+        Contact contact = (Contact) ViewData["EditContact"];
+       
+  
+}
+
+<h2>EditContact</h2>
+
+@using (Html.BeginForm("SaveContact", "Contact"))
+{
+    <form class="form-horizontal">
+        <div class="form-group">
+            <label class="col-lg-2">Id:</label>
+            <br />
+            <input class="form-control"name="Id" readonly value="@contact.Id" />
+            <br />
+            <br />
+        </div>
+        <div class="form-group">
+            <label class="col-lg-2">Vorname:</label>
+            <br/>
+            <input class="form-control" name="Firstname" value="@contact.Firstname"/>
+            <br/>
+            <br/>
+        </div>
+        <div class="form-group">
+            <label class="col-lg-2">Nachname:</label>
+            <br/>
+            <input class="form-control"name="Lastname" value="@contact.Lastname"/>
+            <br/>
+            <br/>
+        </div>
+        <div class="form-group">
+            <label class="col-lg-2">Straße und Hausnummer:</label>
+            <br/>
+            <input class="form-control"name="StreetHouseNumber" value="@contact.StreetHouseNumber"/>
+            <br/>
+            <br/>
+        </div>
+        <div class="form-group">
+            <label class="col-lg-2">Postleitzahl und Ort:</label>
+            <br/>
+            <input class="form-control"name="PlzAndOrt" value="@contact.PlzAndOrt"/>
+            <br/>
+            <br/>
+        </div>
+        <div class="form-group">
+            <label class="col-lg-2">Telefon:</label>
+            <br/>
+            <input class="form-control"name="TelephonNumber" value="@contact.TelephonNumber"/>
+            <br/>
+            <br/>
+        </div>
+        <div class="form-group">
+            <label class="col-lg-2">eMail:</label>
+            <br/>
+            <input class="form-control"name="EMail" value="@contact.EMail"/>
+            <br/>
+            <br/>
+        </div>
+        <div class="form-group">
+            <label class="col-lg-2">Homepage:</label>
+            <br/>
+            <input class="form-control"name="Homepage" value="@contact.Homepage"/>
+            <br/>
+            <br/>
+        </div>
+
+        <button  class="btn btn-success" type="submit"> Absenden </button>
+    </form>
+}
+

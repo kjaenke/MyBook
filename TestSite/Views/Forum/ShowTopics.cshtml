@@ -1,0 +1,60 @@
+﻿@using TestSite.Infrastructure
+@using TestSite.Models
+@using TestSite.Persistence
+@{
+    ViewBag.Title = "Topics";
+
+    UnitOfWork unit = new UnitOfWork(new PlutoContext());
+    IEnumerable<Topic> topic = unit.Topics.GetAll();
+    IEnumerable<User> allusers = unit.Users.GetAll();
+
+    User user = new User();
+    if (Session["User"] != null)
+    {
+        user = (User) Session["User"];
+    }
+
+    string forumId = (string)ViewData["ForumId"];
+}
+
+
+<fieldset>
+    <legend>Übersicht</legend>
+    @if (user.Mail != null)
+    {
+        <a class="btn btn-default btn-xs" href="/Forum/CreateTopic?ForumId=@forumId">Neues Topic</a>
+    }
+    <table  class="table table-striped table-hover ">
+        @foreach (Topic top in topic)
+        {
+            if (top.ForumId == forumId.AsInt() && top.Delete != "true")
+            {
+
+                    <tr>
+                        <td hidden>
+                            <input type="text" name="Id" value="@top.TopicId"/>
+                        </td>
+                        <td id="topicname">@top.Name</td>
+                        @foreach (User use in allusers)
+                        {
+                            if (use.Id.ToString() == top.CreateId)
+                            {
+                                <td id="topiccreatename">@use.Firstname @use.Lastname</td>
+                            }
+                        }
+                        <td id="topictime">@top.CreateDate</td>
+                        <td>
+
+                            <a class="btn btn-success btn-xs" href="/Forum/ShowArticle?id=@top.TopicId">Topic betreten</a>
+                            @if (user.Roles =="Admin" || user.Roles == "Support" || user.Id == top.CreateId.AsInt())
+                            {
+                                <a class="btn btn-warning btn-xs" href="/Forum/EditTopic?id=@top.TopicId">Topic bearbeiten</a>
+                                <a class="btn btn-danger btn-xs" href="/Forum/DeleteTopic?id=@top.TopicId">Topic löschen</a>
+                            }
+                        </td>
+                    </tr>
+                
+            }
+        }
+    </table>
+</fieldset>

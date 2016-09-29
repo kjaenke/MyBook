@@ -1,0 +1,95 @@
+﻿@using TestSite.Infrastructure
+@using TestSite.Models
+@using TestSite.Persistence
+@{
+    ViewBag.Title = "Mails";
+    User user = new User();
+    if (Session["User"] != null)
+    {
+        user = (User) Session["User"];
+    }
+    UnitOfWork unit = new UnitOfWork(new PlutoContext());
+
+    IEnumerable<Mail> mails = unit.Mails.GetAll();
+    IEnumerable<User> allusers = unit.Users.GetAll();
+}
+
+
+
+    <fieldset>
+        <legend>Hier sind ihre Mails.</legend>
+        <p  class="btn btn-default btn-xs">@Html.ActionLink("Neue Mail schreiben", "NewMail", "Mail")</p>
+
+
+        <table  class="table table-striped table-hover ">
+            @foreach (Mail m in mails)
+            {
+                if (m.ToId == user.Id.ToString())
+                {
+                    if (m.IsRead == "false" && m.Delete != "true")
+                    {
+                        using (Html.BeginForm("ReadMail", "Mail"))
+                        {
+                            <tr  class="success">
+                                <td hidden>
+                                    <input type="text" name="Id" value="@m.Id"/>
+                                </td>
+                                <td>@m.Subject</td>
+                                <td>
+                                    Gesendet von:
+                                    @foreach (User all in allusers)
+                                    {
+                                        if (all.Id.ToString() == m.CreateId)
+                                        {
+                                            @all.Firstname @all.Lastname
+                                        }
+                                    }
+                                </td>
+                                <td>@m.Date</td>
+                                <td>
+                                    <button class="btn btn-default btn-xs" type="submit">Lesen</button>
+                                </td>
+
+                            </tr>
+                        }
+                    }
+                }
+            }
+            @foreach (Mail m in mails)
+            {
+                if (m.ToId == user.Id.ToString())
+                {
+                    if (m.IsRead == "true" && m.Delete != "true")
+                    {
+                        using (Html.BeginForm("ReadMail", "Mail"))
+                        {
+                            <tr class="active">
+                                <td hidden>
+                                    <input type="text" name="Id" value="@m.Id"/>
+                                </td>
+                                <td>@m.Subject</td>
+                                <td>
+                                    Gesendet von:
+                                    @foreach (User all in allusers)
+                                    {
+                                        if (all.Id.ToString() == m.CreateId)
+                                        {
+                                            @all.Firstname @all.Lastname
+
+                                        }
+                                    }
+                                </td>
+                                <td>@m.Date</td>
+                                <td>
+                                    <button class="btn btn-default btn-xs" type="submit">Lesen</button>
+                                </td>
+                            </tr>
+                        }
+                    }
+                }
+            }
+
+        </table>
+    </fieldset>
+
+

@@ -1,44 +1,145 @@
-﻿<!DOCTYPE html>
+﻿@using System.Collections.ObjectModel
+@using TestSite.Infrastructure
+@using TestSite.Models
+@using TestSite.Persistence
+@using TestSite.Scripts
+@{
+    User actualluser = new User();
+    if (Session["User"] != null)
+    {
+        actualluser = (User) Session["User"];
+    }
+    string username = actualluser.Firstname;
+
+    string mailstatus = "Mails";
+    UnitOfWork unit = new UnitOfWork(new PlutoContext());
+    IEnumerable<Mail> mails = unit.Mails.GetAll();
+    int mailcounter = 0;
+    int mailinterncounter = 0;
+    string internmailstatus = "Intern";
+    foreach (Mail m in mails)
+    {
+        if (m.ToId.AsInt() == actualluser.Id && m.IsRead == "false")
+        {
+            mailcounter++;
+        }
+    }
+    if (mailcounter != 0)
+    {
+        mailstatus = "Mails [" + mailcounter + "]";
+    }
+
+    foreach (Mail m in mails)
+    {
+        if (m.Type == "system" && m.Delete == "false")
+        {
+            mailinterncounter++;
+        }
+    }
+    if (mailinterncounter != 0)
+    {
+        internmailstatus = "Intern [" + mailinterncounter + "]";
+    }
+    ObservableCollection<Mail> broadmail = new ObservableCollection<Mail>();
+    foreach (Mail m in mails)
+    {
+        if (m.Type == "broadcast")
+        {
+            broadmail.Add(m);
+        }
+    }
+    Counter count = new Counter();
+    int users = count.User();
+    int topics = count.Topic();
+    int articles = count.Article();
+    string broadcaster = broadmail[broadmail.Count - 1].Message;
+}
+
+<!DOCTYPE html>
 <html>
 <head>
-    <meta charset="utf-8" />
+    <meta charset="utf-8"/>
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>@ViewBag.Title - My ASP.NET Application</title>
+    <title>@ViewBag.Title - Kontakt Liste</title>
     @Styles.Render("~/Content/css")
     @Scripts.Render("~/bundles/modernizr")
 
 </head>
 <body>
-    <div class="navbar navbar-inverse navbar-fixed-top">
-        <div class="container">
-            <div class="navbar-header">
-                <button type="button" class="navbar-toggle" data-toggle="collapse" data-target=".navbar-collapse">
-                    <span class="icon-bar"></span>
-                    <span class="icon-bar"></span>
-                    <span class="icon-bar"></span>
-                </button>
-                @Html.ActionLink("Application name", "Index", "Home", new { area = "" }, new { @class = "navbar-brand" })
-            </div>
-            <div class="navbar-collapse collapse">
-                <ul class="nav navbar-nav">
-                    <li>@Html.ActionLink("Home", "Index", "Home")</li>
-                    <li>@Html.ActionLink("About", "About", "Home")</li>
-                    <li>@Html.ActionLink("Contact", "Contact", "Home")</li>
-                </ul>
-                @Html.Partial("_LoginPartial")
-            </div>
+<div class="navbar navbar-default navbar-fixed-top">
+    <div class="container">
+        <div class="navbar-header">
+            <button type="button" class="navbar-toggle" data-toggle="collapse" data-target=".navbar-collapse">
+                <span class="icon-bar"></span>
+                <span class="icon-bar"></span>
+                <span class="icon-bar"></span>
+            </button>
+            @Html.ActionLink("Kontakt Liste", "Index", "Home", new {area = ""}, new {@class = "navbar-brand"})
+        </div>
+        <div class="navbar-collapse collapse">
+            <ul class="nav navbar-nav">
+                @if (actualluser.Mail != null)
+                {
+                    if (actualluser.Roles == "Admin")
+                    {
+                        <li style="color: red">@Html.ActionLink("✧" + actualluser.Firstname + "✧", "Profiles", "User")</li>
+                    }
+                    if (actualluser.Roles == "Support")
+                    {
+                        <li style="color: blue">@Html.ActionLink("⚪" + actualluser.Firstname + "⚪", "Profiles", "User")</li>
+                    }
+                    if (actualluser.Roles == "User")
+                    {
+                        <li style="color: black">@Html.ActionLink("||" + actualluser.Firstname + "||", "Profiles", "User")</li>
+                    }
+
+                    <li>@Html.ActionLink("Kontaktbuch", "Index", "Contact")</li>
+                    <li>@Html.ActionLink(mailstatus, "Index", "Mail")</li>
+                }
+                <li>@Html.ActionLink("Mitglieder", "UserList", "User")</li>
+                <li>@Html.ActionLink("Forum", "Index", "Forum")</li>
+
+
+                @if (actualluser.Roles == "Admin" || actualluser.Roles == "Support")
+                {
+                    <li>@Html.ActionLink(internmailstatus, "Intern", "Mail")</li>
+                    <li> @Html.ActionLink("Verwaltung", "RoleManager", "User")</li>
+                }
+
+            </ul>
+            @Html.Partial("_LoginPartial")
         </div>
     </div>
-    <div class="container body-content">
-        @RenderBody()
-        <hr />
-        <footer>
-            <p>&copy; @DateTime.Now.Year - My ASP.NET Application</p>
-        </footer>
-    </div>
+    <div class="well well-sm" style="border-radius: 20px; width: 700px; text-align: center; margin: auto;">@broadcaster</div>
 
-    @Scripts.Render("~/bundles/jquery")
-    @Scripts.Render("~/bundles/bootstrap")
-    @RenderSection("scripts", required: false)
+</div>
+<div class="container body-content">
+    <br/><br/><br/><br/>
+    @RenderBody()
+    <hr/>
+</div><br/><br/><br/>
+
+<footer style="position: fixed; bottom: 0; width: 100%; background-color: white; border-top: 2px solid black">
+    <p style="width: 100%">
+        <div class="progress progress-striped active">
+            <div class="progress-bar" style="width: 100%"></div>
+        </div>
+        <ul style="margin-left: 20px; float: left; display: inline; list-style: none; text-align: left">
+            <li>Wir haben <span style="font-weight: bold">@users</span> registrierte Mitglieder.</li>
+            <li>Die in <span style="font-weight: bold">@topics</span> Topics,</li>
+            <li><span style="font-weight: bold">@articles</span> Artikel erstellt haben.</li>
+        </ul>
+
+        <ul style="float: right; text-align: right; list-style: none; display: inline; margin-right: 60px;">
+            <li>&copy; @DateTime.Now.Year - Kontakt Liste </li>
+            <li>@Html.ActionLink("Kontakt", "Contact", "Home")</li>
+            <li>@DateTime.Now.ToShortDateString()</li>
+        </ul>
+    </p>
+
+</footer>
+@Scripts.Render("~/bundles/jquery")
+@Scripts.Render("~/bundles/bootstrap")
+@RenderSection("scripts", false)
 </body>
 </html>

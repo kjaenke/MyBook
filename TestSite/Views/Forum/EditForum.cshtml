@@ -1,0 +1,41 @@
+﻿@using TestSite.Infrastructure
+@using TestSite.Models
+@using TestSite.Persistence
+
+@{
+    UnitOfWork unit = new UnitOfWork(new PlutoContext());
+    string id = (string) ViewData["ThisForum"];
+    Forum forum = unit.Forums.Get(id.AsInt());
+}
+
+@using (Html.BeginForm("SaveEditForum", "Forum"))
+{
+    <fieldset>
+        <legend>Neues Forum</legend>
+
+        <div class="form-group">
+            <label for="inputId" class="col-lg-2 control-label">Forum-Id</label>
+            <div class="col-lg-10">
+                <input type="text" class="form-control" readonly id="inputId" value="@id" name="id">
+            </div>
+        </div>
+        <div class="form-group">
+            <label for="inputForumName" class="col-lg-2 control-label">Forum-Name</label>
+            <div class="col-lg-10">
+                <input type="text" class="form-control" id="inputForumName" value="@forum.ForumName" name="forumName">
+            </div>
+        </div>
+        <div class="form-group">
+            <label for="textArea" class="col-lg-2 control-label">Beschreibung</label>
+            <div class="col-lg-10">
+                <textarea class="form-control" rows="3" name="comment" id="textArea">@forum.Comment</textarea>
+            </div>
+        </div>
+        <div class="form-group">
+            <div class="col-lg-10 col-lg-offset-2">
+                <button type="reset" class="btn btn-default">Abbrechen</button>
+                <button type="submit" class="btn btn-primary">Erstellen</button>
+            </div>
+        </div>
+    </fieldset>
+}

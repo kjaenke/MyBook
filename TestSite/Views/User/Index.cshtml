@@ -1,0 +1,140 @@
+﻿@{
+    ViewBag.Title = "Index";
+
+    string registerTest = (string)ViewData["RegisterTest"];
+}
+<head>
+    <title>@ViewBag.Title</title>
+
+</head>
+<body>
+
+    @if (registerTest != string.Empty)
+    {
+        <div class="alert alert-warning fade in" name="NoMail">
+            <a href="#" class="close" data-dismiss="alert" aria-label="close">&times;</a>
+            <strong>Warning!</strong> Überprüfen Sie ihre Daten.
+        </div>
+    }
+@using (Html.BeginForm("Welcome", "User"))
+{
+    <form class="form-horizontal">
+        <fieldset>
+            <legend>Registrieren Sie sich</legend>
+            <div class="form-group">
+                <label for="select" class="col-lg-2 control-label">Anrede</label>
+                <div class="col-lg-10">
+                    <select class="form-control" name="Salutation" id="select">
+                        <option>Herr</option>
+                        <option>Frau</option>
+                    </select>
+                </div>
+            </div>
+
+
+
+            @if (registerTest.Contains("F"))
+            {
+                <div class="form-group has-warning">
+                    <label for="inputFirstname" class="col-lg-2 control-label">Vorname</label>
+                    <div class="col-lg-10">
+                        <input type="text" class="form-control" id="inputFirstname" name="Firstname" placeholder="Vorname">
+                    </div>
+                </div>
+            }
+            else
+            {
+                <div class="form-group">
+                    <label for="inputFirstname" class="col-lg-2 control-label">Vorname</label>
+                    <div class="col-lg-10">
+                        <input type="text" class="form-control" id="inputFirstname" name="Firstname" placeholder="Vorname">
+                    </div>
+                </div>
+            }
+
+
+
+
+            @if (registerTest.Contains("L"))
+            {
+                <div class="form-group has-warning">
+                    <label for="inputLastname" class="col-lg-2 control-label">Nachname</label>
+                    <div class="col-lg-10">
+                        <input type="text" class="form-control" id="inputLastname" name="Lastname" placeholder="Nachname">
+                    </div>
+                </div>
+            }
+            else
+            {
+                <div class="form-group">
+                    <label for="inputLastname" class="col-lg-2 control-label">Nachname</label>
+                    <div class="col-lg-10">
+                        <input type="text" class="form-control" id="inputLastname" name="Lastname" placeholder="Nachname">
+                    </div>
+                </div>
+            }
+
+
+
+            <div class="form-group">
+                <label for="inputPhonenumber" class="col-lg-2 control-label">Telefonnummer</label>
+                <div class="col-lg-10">
+                    <input type="text" class="form-control" id="inputPhonenumber" name="Phonenumber" placeholder="Bsp. +493926 492343">
+                </div>
+            </div>
+
+
+
+            @if (registerTest.Contains("M"))
+            {
+                <div class="form-group has-warning">
+                    <label for="inputEmail" class="col-lg-2 control-label">Email</label>
+                    <div class="col-lg-10">
+                        <input type="text" class="form-control" name="Mail" id="inputEmail" placeholder="Email">
+                    </div>
+                </div>
+            }
+            else
+            {
+                <div class="form-group">
+                    <label for="inputEmail" class="col-lg-2 control-label">Email</label>
+                    <div class="col-lg-10">
+                        <input type="text" class="form-control" name="Mail" id="inputEmail" placeholder="Email">
+                    </div>
+                </div>
+            }
+
+            @if (registerTest.Contains("M"))
+            {
+                <div class="form-group has-warning">
+                    <label for="inputPassword" class="col-lg-2 control-label">Passwort</label>
+                    <div class="col-lg-10">
+                        <input type="password" class="form-control" id="inputPassword" name="Password" placeholder="Password">
+                    </div>
+                </div>
+            }
+            else
+            {
+                <div class="form-group">
+                    <label for="inputPassword" class="col-lg-2 control-label">Passwort</label>
+                    <div class="col-lg-10">
+                        <input type="password" class="form-control" id="inputPassword" name="Password" placeholder="Password">
+                    </div>
+                </div>
+            }
+            <div class="form-group">
+                <div class="col-lg-10 col-lg-offset-2">
+                    <button type="reset" class="btn btn-default">Abbrechen</button>
+                    <button type="submit" class="btn btn-primary">Absenden</button>
+                </div>
+            </div>
+        </fieldset>
+    </form>
+}
+
+
+</body>
+
+
+
+

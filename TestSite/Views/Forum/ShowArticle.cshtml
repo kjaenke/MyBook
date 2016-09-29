@@ -1,0 +1,286 @@
+﻿@using TestSite.Infrastructure
+@using TestSite.Models
+@using TestSite.Persistence
+@{
+    ViewBag.Title = "Beiträge";
+    User user = new User();
+    if (Session["User"] != null)
+    {
+        user = (User) Session["User"];
+    }
+    UnitOfWork unit = new UnitOfWork(new PlutoContext());
+    Topic topic = (Topic) ViewData["Topic"];
+    Forum forum = unit.Forums.Get(topic.ForumId);
+    string forumname = forum.ForumName;
+
+
+
+    IEnumerable<User> users = unit.Users.GetAll();
+    IEnumerable<Article> articles = unit.Articles.GetAll();
+    IEnumerable<Forum> forums = unit.Forums.GetAll();
+}
+
+<h2>@topic.Name</h2>
+<br/>
+<h5>@forumname</h5>
+<br/>
+<br/>
+<table class="table table-striped table-hover ">
+    <tr class="success">
+        <td style="text-align: center; width: 250px;">
+            @foreach (User use in users)
+            {
+                if (use.Id == topic.CreateId.AsInt())
+                {
+                    @use.Firstname
+                }
+            }
+
+        </td>
+        <td style="text-align: center; width: 700px;">
+            @topic.Name
+        </td>
+        <td style="width:450px">
+            @if (user.Roles == "Admin" || user.Roles == "Support")
+            {
+                using (Html.BeginForm("MoveTopic", "Forum"))
+                 {
+                     <input type="text" name="id" value="@topic.TopicId" hidden/>
+                     <select name="where">
+                         @foreach (Forum f in forums)
+                         {
+                             <option>@f.ForumName</option>
+
+                         }
+                     </select>
+                     <button class="btn btn-success btn-xs" type="submit">Verschieben</button>
+                 }
+            }
+        </td>
+    </tr>
+    <tr class="success">
+        <td style="text-align: center; width: 160px">
+            <img src="../../src/images.jpg"/>
+        </td>
+        <td colspan="2">@topic.Content</td>
+    </tr>
+    <tr class="success">
+
+        @foreach (User use in users)
+        {
+            if (use.Id == topic.CreateId.AsInt())
+            {
+                if (use.Roles == "Admin")
+                {
+                    <td style="text-align: center; color: red; font-weight: bold;">@use.Roles</td>
+                }
+                if (use.Roles == "Support")
+                {
+                    <td style="text-align: center; color: blue; font-weight: bold;">@use.Roles</td>
+                }
+                if (use.Roles == "User")
+                {
+                    <td style="text-align: center; color: black; font-weight: bold;">@use.Roles</td>
+                }
+            }
+        }
+        <td style="text-align: center" colspan="2">
+            @topic.CreateDate
+        </td>
+    </tr>
+</table>
+<br/>
+<br/>
+@foreach (Article art in articles)
+{
+    if (art.Delete != "true")
+    {
+        if (art.TopicId == topic.TopicId)
+        {
+            if (art.CreateId == topic.CreateId)
+            {
+                <table class="table table-striped table-hover ">
+                    <tr  class="success" hidden>
+                        <td>
+                            <input type="text" name="ArticleId" value="@art.ArticleId"/>
+                        </td>
+                    </tr>
+                    <tr  class="success">
+                        <td style="text-align: center; width: 250px;">
+                            @foreach (User use in users)
+                            {
+                                if (use.Id == art.CreateId.AsInt())
+                                {
+                                    @use.Firstname
+                                }
+                            }
+
+                        </td>
+
+                        @if (user.Id.ToString() == art.CreateId || user.Roles =="Admin" || user.Roles =="Support")
+                        {
+                            <td style="width: 200px;">
+                                <a class="btn btn-primary btn-xs" href="/Forum/EditArticle?articleId=@art.ArticleId">Beitrag bearbeiten</a>
+
+                            </td>
+                        }
+                        else
+                        {
+                            <td></td>
+                        }
+                    </tr>
+                    <tr  class="success">
+                        <td style="text-align: center; width: 160px">
+                            <img src="../../src/images.jpg"/>
+                        </td>
+                        <td style="text-align: center; width: 700px;">
+                            @art.Content
+                        </td>
+                    </tr>
+                    <tr  class="success">
+
+                        @foreach (User use in users)
+                        {
+                            if (use.Id == art.CreateId.AsInt())
+                            {
+                                if (use.Roles == "Admin")
+                                {
+                                    <td style="text-align: center; color: red; font-weight: bold;">@use.Roles</td>
+                                }
+                                if (use.Roles == "Support")
+                                {
+                                    <td style="text-align: center; color: blue; font-weight: bold;">@use.Roles</td>
+                                }
+                                if (use.Roles == "User")
+                                {
+                                    <td style="text-align: center; color: black; font-weight: bold;">@use.Roles</td>
+                                }
+                            }
+                        }
+                        <td style="text-align: center;" >
+                            @art.CreateDate
+                        </td>
+                    </tr>
+                </table>
+                    
+            }
+            else
+            {
+                <table class="table table-striped table-hover ">
+                    <tr hidden>
+                        <td>
+                            <input type="text" name="ArticleId" value="@art.ArticleId"/>
+                        </td>
+                    </tr>
+                    <tr>
+                        <td style="text-align: center; width: 250px;">
+                            @foreach (User use in users)
+                            {
+                                if (use.Id == art.CreateId.AsInt())
+                                {
+                                    @use.Firstname
+                                }
+                            }
+
+                        </td>
+
+                        @if (user.Id.ToString() == art.CreateId || user.Roles == "Admin" || user.Roles == "Support")
+                        {
+                            <td style="width: 200px;">
+                                <a class="btn btn-primary btn-xs" href="/Forum/EditArticle?articleId=@art.ArticleId">Beitrag bearbeiten</a>
+                            </td>
+                        }
+                        else
+                        {
+                            <td></td>
+                        }
+                    </tr>
+                    <tr>
+                        <td style="text-align: center; width: 160px">
+                            <img src="../../src/images.jpg"/>
+                        </td>
+                        <td style="text-align: center; width: 700px;">
+                            @art.Content
+                        </td>
+                    </tr>
+                    <tr>
+
+                        @foreach (User use in users)
+                        {
+                            if (use.Id == art.CreateId.AsInt())
+                            {
+                                if (use.Roles == "Admin")
+                                {
+                                    <td style="text-align: center; color: red; font-weight: bold;">@use.Roles</td>
+                                }
+                                if (use.Roles == "Support")
+                                {
+                                    <td style="text-align: center; color: blue; font-weight: bold;">@use.Roles</td>
+                                }
+                                if (use.Roles == "User")
+                                {
+                                    <td style="text-align: center; color: black; font-weight: bold;">@use.Roles</td>
+                                }
+                            }
+                        }
+                        <td style="text-align: center;">
+                            @art.CreateDate
+                        </td>
+                    </tr>
+                </table>
+                    
+            }
+            <br/>
+        }
+    }
+}
+@if (user.Mail != null)
+{
+    using (Html.BeginForm("SaveArticle", "Forum"))
+    {
+        <table class="table table-striped table-hover">
+            <tr hidden>
+                <td>
+                    <input type="text" name="TopicId" hidden value="@topic.TopicId"/>
+                </td>
+                <td>
+                    <input type="text" name="CreateId" hidden value="@user.Id"/>
+                </td>
+            </tr>
+            <tr>
+                <td colspan="2">
+                    <textarea type="text" name="Content" style="width: 1200px" cols="10000"></textarea>
+                </td>
+            </tr>
+            <tr>
+                <td colspan="2">
+                    <button class="btn btn-primary btn-xs" type="submit" style="width: 600px"> Absenden</button>
+                </td>
+            </tr>
+        </table>
+        <br/>
+        <br/>
+        <br/>
+        <br/>
+        <br/>
+    }
+}
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+

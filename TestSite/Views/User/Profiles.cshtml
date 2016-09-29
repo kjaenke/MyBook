@@ -1,0 +1,51 @@
+﻿@using TestSite.Models
+@{
+    User actualluser = new User();
+    if (Session["User"] != null)
+    {
+        actualluser = (User) Session["User"];
+    }
+    ViewBag.Title = actualluser.Firstname;
+}
+
+
+    <h2>Mein Profil:</h2>
+
+    <table class="table table-striped table-hover ">
+        <tr>
+            <td rowspan="5" style=" width: 160px; height: 160px; text-align: center;">
+                <img src="../../src/images.jpg"/>
+            </td>
+            @if (actualluser.Roles == "Admin")
+            {
+                <td>@actualluser.Roles</td>
+            }
+            @if (actualluser.Roles == "Support")
+            {
+                <td>@actualluser.Roles</td>
+            }
+            @if (actualluser.Roles == "User")
+            {
+                <td>@actualluser.Roles</td>
+            }
+        </tr>
+
+
+        <tr>
+            <td>@actualluser.Salutation</td>
+        </tr>
+
+        <tr>
+
+            <td>@actualluser.Firstname @actualluser.Lastname</td>
+        </tr>
+        <tr>
+
+            <td>@actualluser.Mail</td>
+        </tr>
+        <tr>
+            <td>@actualluser.Phonenumber</td>
+        </tr>
+
+
+    </table>

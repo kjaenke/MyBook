@@ -1,0 +1,43 @@
+﻿@using TestSite.Models
+@{
+    ViewBag.Title = "Beitrag bearbeiten";
+    User actuallUser = new User();
+    if (Session["User"] != null)
+    {
+        actuallUser = (User) Session["User"];
+    }
+    Article article = (Article)ViewData["EditArticle"];
+}
+
+@using (Html.BeginForm("SaveEditArticle", "Forum"))
+{
+    <form class="form-horizontal">
+        <fieldset>
+            <legend>Beitrag bearbeiten</legend>
+        </fieldset>
+          
+                <input type="text" name="Id" hidden value="@article.TopicId" hidden/>
+                <input type="text" name="ArticleId" hidden value="@article.ArticleId" hidden/>
+                <input type="text" name="LastEditId" hidden value="@actuallUser.Id" hidden/>
+      
+        <div class="form-group">
+            <label for="textArea" class="col-lg-2 control-label">Textarea</label>
+            <div class="col-lg-10">
+                <textarea class="form-control" rows="3" name="Content"  value="@article.Content" id="textArea">@article.Content</textarea>
+            </div>
+        </div>
+        <div class="form-group">
+            <div class="col-lg-10 col-lg-offset-2">
+                <button type="submit" class="btn btn-primary">Änderung Speichern</button>
+            </div>
+        </div>       
+
+
+        </form>
+
+    }
+    @using (Html.BeginForm("DeleteArticle", "Forum"))
+    {
+        <input hidden type="text" name="ArticleId" value="@article.ArticleId" />
+        <button class="btn btn-danger btn-xs" type="submit"> Beitrag löschen </button>
+    }

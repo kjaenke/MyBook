@@ -1,0 +1,92 @@
+﻿@using TestSite.Models
+@{
+    ViewBag.Title = "Archiv";
+
+    IEnumerable<Contact> contact = (IEnumerable<Contact>) Session["Contacts"];
+
+    User user = new User();
+    if (Session["User"] != null)
+    {
+        user = (User) Session["User"];
+    }
+}
+
+<head>
+    <title>@ViewBag.Title</title>
+    <link href="../../CSS/login.css" rel="stylesheet" type="text/css"/>
+</head>
+
+
+@if (user.Roles == "Admin" || user.Roles == "Support")
+{
+    <fieldset>
+        <legend>Archiv</legend>
+        <table  class="table table-striped table-hover ">
+            <tr>
+                @if (user.Roles == "Admin")
+                {
+                    <th>Vorname</th>
+                }
+                <th>Nachname</th>
+                <th>Straße und Hausnummer</th>
+                <th>PLZ und Ort</th>
+                <th>Telephonnumber</th>
+                <th>eMail</th>
+                <th>Homepage</th>
+                <th style="width: 300px;">Funktionen</th>
+            </tr>
+            @foreach (Contact c in contact)
+            {
+                using (Html.BeginForm("Funktion", "Contact"))
+                {
+                    if (c.Status == 3)
+                    {
+                        <tr class="active">
+                            <td hidden>
+                                <input type="text" name="Id" value="@c.Id" readonly/>
+                            </td>
+                            <td id="status3">
+                                @c.Firstname
+                            </td>
+                            <td id="status3">
+                                @c.Lastname
+                            </td>
+                            <td id="status3">
+                                @c.StreetHouseNumber
+                            </td>
+                            <td id="status3">
+                                @c.PlzAndOrt
+                            </td>
+                            <td id="status3">
+                                @c.TelephonNumber
+                            </td>
+                            <td id="status3">
+                                @c.EMail
+                            </td>
+                            <td id="status3">
+                                @c.Homepage
+                            </td>
+                            @if (user.Roles == "Admin")
+                            {
+                                <td id="status3">
+                                    <select style="float: left; width: 150px;" name="funktion"class="form-control">
+                                        @if (user.Roles == "Admin")
+                                        {
+                                            <option>Reaktivieren</option>
+                                        }
+
+                                    </select><button class="btn btn-primary" style=" float: left;"type="submit">Absenden</button>
+                                   
+                                </td>
+                            }
+
+                        </tr>
+                    }
+                }
+            }
+
+        </table>
+    </fieldset>
+    <p>@Html.ActionLink("Zurück", "Index", "Contact")</p>
+}
+
