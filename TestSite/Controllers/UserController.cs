@@ -135,14 +135,14 @@ namespace TestSite.Controllers
                 }
                 else
                 {
-                    return Redirect("/User/UserList");
+                    return View("UserList");
                 }
             }
             UnitOfWork unit = new UnitOfWork(new PlutoContext());
 
             if (unit.Users.Get(id.AsInt()) == null)
             {
-                return Redirect("User/UserList");
+                return View("UserList");
             }
             ViewData["UserId"] = id.AsInt();
             return View();

@@ -1,7 +1,10 @@
-﻿@using TestSite.Models
+﻿@using TestSite.Infrastructure
+@using TestSite.Models
+@using TestSite.Persistence
 @{
     ViewBag.Title = "Mitglieder";
-    IEnumerable<User> user = (IEnumerable<User>) Session["UserList"];
+    UnitOfWork unit = new UnitOfWork(new PlutoContext());
+    IEnumerable<User> user = unit.Users.GetAll();
     User actuallUser = new User();
     if (Session["User"] != null)
     {

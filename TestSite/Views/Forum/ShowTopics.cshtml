@@ -39,7 +39,7 @@
                         {
                             if (use.Id.ToString() == top.CreateId)
                             {
-                                <td id="topiccreatename">@use.Firstname @use.Lastname</td>
+                                <td id="topiccreatename"><a href="/User/Profiles?id=@use.Id">@use.Firstname @use.Lastname</a></td>
                             }
                         }
                         <td id="topictime">@top.CreateDate</td>

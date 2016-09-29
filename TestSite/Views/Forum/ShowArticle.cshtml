@@ -32,7 +32,7 @@
             {
                 if (use.Id == topic.CreateId.AsInt())
                 {
-                    @use.Firstname
+                    <a href="/User/Profiles?id=@use.Id">@use.Firstname @use.Lastname</a>
                 }
             }
 
@@ -111,7 +111,7 @@
                             {
                                 if (use.Id == art.CreateId.AsInt())
                                 {
-                                    @use.Firstname
+                                    <a href="/User/Profiles?id=@use.Id">@use.Firstname @use.Lastname</a>
                                 }
                             }
 
@@ -178,7 +178,7 @@
                             {
                                 if (use.Id == art.CreateId.AsInt())
                                 {
-                                    @use.Firstname
+                                    <a href="/User/Profiles?id=@use.Id">@use.Firstname @use.Lastname</a>
                                 }
                             }
 

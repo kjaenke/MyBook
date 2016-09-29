@@ -73,7 +73,8 @@ else
                 {
                     if (use.Id == mail.CreateId.AsInt())
                     {
-                        @use.Firstname
+                        <a href="/User/Profiles?id=@use.Id">@use.Firstname @use.Lastname</a>
+                        
                     }
                 }
 
@@ -125,7 +126,7 @@ else
                         {
                             if (use.Id == m.CreateId.AsInt())
                             {
-                                @use.Firstname
+                                <a href="/User/Profiles?id=@use.Id">@use.Firstname @use.Lastname</a>
                             }
                         }
 
