@@ -19,10 +19,13 @@
 
 <h3>Registrierte Mitglieder</h3>
 <style>
-    a:link {color: black;}
-a:visited {color: black;}
-a:active {color: black;}
-a:hover {color: black;}
+    a:link { color: black; }
+
+    a:visited { color: black; }
+
+    a:active { color: black; }
+
+    a:hover { color: black; }
 </style>
 <body>
 <fieldset>
@@ -36,7 +39,7 @@ a:hover {color: black;}
 
             @if (actuallUser.Roles == "Admin")
             {
-                <th style="width: 300px">Befördern/Dekradieren</th>
+                <th style="width: 300px">Degradieren</th>
                 <th style="width: 300px"></th>
             }
         </tr>
@@ -47,28 +50,21 @@ a:hover {color: black;}
             <tr class="active">
                 @if (use.Roles == "Admin")
                 {
-                    using (Html.BeginForm("UserRank", "User"))
+                    admin++;
+                    <td style="width: 300px">@admin</td>
+                    <td style="width: 300px">
+                        <a href="/User/Profiles?id=@use.Id">@use.Firstname @use.Lastname</a>
+                    </td>
+                    <td style="width: 300px">@use.Mail</td>
+                    if (actuallUser.Roles == "Admin")
                     {
-                        admin++;
-                        <td style="width: 300px">@admin</td>
-                        <td style="width: 300px"><a href="/User/Profiles?id=@use.Id">@use.Firstname @use.Lastname</a></td>
-                        <td style="width: 300px">@use.Mail</td>
-                        if (actuallUser.Roles == "Admin")
-                        {
-                            <td style="width: 300px">
-                                <div class="form-group">
-                                    <div class="col-lg-10">
-                                        <select id="select" name="Funktion">
-                                            <option>Befördern</option>
-                                            <option>Dekradieren</option>
-                                        </select>
-                                    </div>
+                        <td style="width: 300px">
+                            <div class="form-group">
+                                <div class="col-lg-10">
+                                    <a class="btn btn-danger btn-xs" href="/User/UserRank?id=@use.Id&funk=Degradieren">Degradieren</a>
                                 </div>
-                            </td>
-                            <td style="width: 300px">
-                                <button  class="btn btn-default btn-xs" type="submit">Absenden</button>
-                            </td>
-                        }
+                            </div>
+                        </td>
                     }
                 }
             </tr>
@@ -87,7 +83,7 @@ a:hover {color: black;}
 
             @if (actuallUser.Roles == "Admin")
             {
-                <th style="width: 300px">Befördern/Dekradieren</th>
+                <th style="width: 300px">Befördern/Degradieren</th>
                 <th style="width: 300px"></th>
             }
         </tr>
@@ -97,25 +93,20 @@ a:hover {color: black;}
             <tr class="active">
                 @if (use.Roles == "Support")
                 {
-                    using (Html.BeginForm("UserRank", "User"))
+                    supp++;
+                    <td style="width: 300px">@supp</td>
+
+                    <td style="width: 300px">
+                        <a href="/User/Profiles?id=@use.Id">@use.Firstname @use.Lastname</a>
+                    </td>
+                    <td style="width: 300px">@use.Mail</td>
+                    if (actuallUser.Roles == "Admin")
                     {
-                        supp++;
-                        <td style="width: 300px">@supp</td>
-                        
-                        <td style="width: 300px"><a href="/User/Profiles?id=@use.Id">@use.Firstname @use.Lastname</a></td>
-                        <td style="width: 300px">@use.Mail</td>
-                        if (actuallUser.Roles == "Admin")
-                        {
-                            <td style="width: 300px">
-                                <select  name="Funktion">
-                                    <option>Befördern</option>
-                                    <option>Dekradieren</option>
-                                </select>
-                            </td>
-                            <td style="width: 300px">
-                                <button  class="btn btn-default btn-xs" type="submit">Absenden</button>
-                            </td>
-                        }
+                        <td style="width: 300px">
+                            <a class="btn btn-success btn-xs" href="/User/UserRank?id=@use.Id&funk=Befördern">Befördern</a>
+                            <a class="btn btn-danger btn-xs" href="/User/UserRank?id=@use.Id&funk=Degradieren">Degradieren</a>
+
+                        </td>
                     }
                 }
             </tr>
@@ -134,7 +125,7 @@ a:hover {color: black;}
 
             @if (actuallUser.Roles == "Admin")
             {
-                <th style="width: 300px">Befördern/Dekradieren</th>
+                <th style="width: 300px">Befördern</th>
                 <th style="width: 300px"></th>
             }
         </tr>
@@ -144,24 +135,18 @@ a:hover {color: black;}
             <tr>
                 @if (use.Roles == "User")
                 {
-                    using (Html.BeginForm("UserRank", "User"))
+                    us++;
+                    <td style="width: 300px">@us</td>
+                    <td style="width: 300px">
+                        <a href="/User/Profiles?id=@use.Id">@use.Firstname @use.Lastname</a>
+                    </td>
+                    <td style="width: 300px">@use.Mail</td>
+                    if (actuallUser.Roles == "Admin")
                     {
-                        us++;
-                        <td style="width: 300px">@us</td>
-                        <td style="width: 300px"><a href="/User/Profiles?id=@use.Id">@use.Firstname @use.Lastname</a></td>
-                        <td style="width: 300px">@use.Mail</td>
-                        if (actuallUser.Roles == "Admin")
-                        {
-                            <td style="width: 300px">
-                                <select  name="Funktion">
-                                    <option>Befördern</option>
-                                    <option>Dekradieren</option>
-                                </select>
-                            </td>
-                            <td style="width: 300px">
-                                <button  class="btn btn-default btn-xs" type="submit">Absenden</button>
-                            </td>
-                        }
+                        <td style="width: 300px">
+                            <a class="btn btn-success btn-xs" href="/User/UserRank?id=@use.Id&funk=Befördern">Befördern</a>
+
+                        </td>
                     }
                 }
             </tr>

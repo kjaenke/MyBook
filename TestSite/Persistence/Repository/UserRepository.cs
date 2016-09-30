@@ -77,7 +77,7 @@ namespace TestSite.Persistence.Repository
                     return user;
                 }
             }
-            if (funktion == "Dekradieren")
+            if (funktion == "Degradieren")
             {
                 if (user.Roles == "Admin")
                 {

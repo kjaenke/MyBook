@@ -22,7 +22,7 @@
     <legend>Übersicht</legend>
     @if (user.Mail != null)
     {
-        <a class="btn btn-default btn-xs" href="/Forum/CreateTopic?ForumId=@forumId">Neues Topic</a>
+        <a class="btn btn-default btn-xs" href="/Forum/CreateTopic?ForumId=@forumId">Neues Thema</a>
     }
     <table  class="table table-striped table-hover ">
         @foreach (Topic top in topic)
@@ -34,7 +34,7 @@
                         <td hidden>
                             <input type="text" name="Id" value="@top.TopicId"/>
                         </td>
-                        <td id="topicname">@top.Name</td>
+                        <td id="topicname"><a href="/Forum/ShowArticle?id=@top.TopicId">@top.Name</a></td>
                         @foreach (User use in allusers)
                         {
                             if (use.Id.ToString() == top.CreateId)
@@ -45,11 +45,11 @@
                         <td id="topictime">@top.CreateDate</td>
                         <td>
 
-                            <a class="btn btn-success btn-xs" href="/Forum/ShowArticle?id=@top.TopicId">Topic betreten</a>
+                            
                             @if (user.Roles =="Admin" || user.Roles == "Support" || user.Id == top.CreateId.AsInt())
                             {
-                                <a class="btn btn-warning btn-xs" href="/Forum/EditTopic?id=@top.TopicId">Topic bearbeiten</a>
-                                <a class="btn btn-danger btn-xs" href="/Forum/DeleteTopic?id=@top.TopicId">Topic löschen</a>
+                                <a class="btn btn-warning btn-xs" href="/Forum/EditTopic?id=@top.TopicId">Thema bearbeiten</a>
+                                <a class="btn btn-danger btn-xs" href="/Forum/DeleteTopic?id=@top.TopicId">Thema löschen</a>
                             }
                         </td>
                     </tr>

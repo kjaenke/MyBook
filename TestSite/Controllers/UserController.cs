@@ -175,13 +175,23 @@ namespace TestSite.Controllers
             return View();
         }
 
-        public ActionResult UserRank(string id, string funktion)
+        public ActionResult UserRank(string id, string funk)
         {
-            UnitOfWork unit = new UnitOfWork(new PlutoContext());
-            unit.Users.UserRank(id, funktion);
-            unit.Complete();
+            User user = new User();
+            if (Session["User"] != null)
+            {
+                user = (User)Session["User"];
+            }
+            if (user.Roles == "Admin")
+            {
+                UnitOfWork unit = new UnitOfWork(new PlutoContext());
+                unit.Users.UserRank(id, funk);
+                unit.Complete();
 
+                return Redirect("UserList");
+            }
             return Redirect("UserList");
+
         }
     }
 }
