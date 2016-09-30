@@ -42,44 +42,56 @@ namespace TestSite.Controllers
                 return Redirect("/User/Login");
             }
             SystemMessage message = new SystemMessage();
-            if (funktion == "Melden")
+            switch (funktion)
             {
-                UnitOfWork unit = new UnitOfWork(new PlutoContext());
-                BackgroundJob.Enqueue(() => message.NewAction("KONTAKT GEMELDET",
-                    "Der Kontakt mit der ID: " + id +
-                    ", wurde soeben gemeldet. Nach Bearbeitung muss diese Mail gelöscht werden." + DateTime.Now.ToString()));
+                case "Melden":
+                {
+                    UnitOfWork unit = new UnitOfWork(new PlutoContext());
+                    BackgroundJob.Enqueue(() => message.NewAction("KONTAKT GEMELDET",
+                        "Der Kontakt mit der ID: " + id +
+                        ", wurde soeben gemeldet. Nach Bearbeitung muss diese Mail gelöscht werden." + DateTime.Now.ToString()));
 
-                unit.Contacts.ChangeStatus(id, 2);
-                return Redirect("/Contact/Index");
+                    unit.Contacts.ChangeStatus(id, 2);
+                    return Redirect("/Contact/Index");
+                }
+                case "Sperren":
+                {
+                    if (user.Roles != "Admin" && user.Roles != "Support") return Redirect("/Contact/Index");
+                    UnitOfWork unit = new UnitOfWork(new PlutoContext());
+                    unit.Contacts.ChangeStatus(id, 1);
+                    return Redirect("/Contact/Index");
+                }
+                case "Entsperren":
+                {
+                    if (user.Roles != "Admin") return Redirect("/Contact/Index");
+                    UnitOfWork unit = new UnitOfWork(new PlutoContext());
+                    unit.Contacts.ChangeStatus(id, 0);
+                    unit.Complete();
+                    return Redirect("/Contact/Index");
+                }
+                case "Löschen":
+                {
+                    if (user.Roles != "Admin") return Redirect("/Contact/Index");
+                    UnitOfWork unit = new UnitOfWork(new PlutoContext());
+                    unit.Contacts.ChangeStatus(id, 3);
+                    return Redirect("/Contact/Index");
+                }
+                case "Reaktivieren":
+                {
+                    if (user.Roles != "Admin") return Redirect("/Contact/Index");
+                    UnitOfWork unit = new UnitOfWork(new PlutoContext());
+                    unit.Contacts.ChangeStatus(id, 0);
+                    return Redirect("/Contact/Index");
+                }
             }
-            if (funktion == "Sperren")
+            if (funktion != "Bearbeiten") return Redirect("/Contact/Index");
             {
                 UnitOfWork unit = new UnitOfWork(new PlutoContext());
-                unit.Contacts.ChangeStatus(id, 1);
-                return Redirect("/Contact/Index");
-            }
-            if (funktion == "Entsperren")
-            {
-                UnitOfWork unit = new UnitOfWork(new PlutoContext());
-                unit.Contacts.ChangeStatus(id, 0);
-                unit.Complete();
-                return Redirect("/Contact/Index");
-            }
-            if (funktion == "Löschen")
-            {
-                UnitOfWork unit = new UnitOfWork(new PlutoContext());
-                unit.Contacts.ChangeStatus(id, 3);
-                return Redirect("/Contact/Index");
-            }
-            if (funktion == "Reaktivieren")
-            {
-                UnitOfWork unit = new UnitOfWork(new PlutoContext());
-                unit.Contacts.ChangeStatus(id, 0);
-                return Redirect("/Contact/Index");
-            }
-            if (funktion == "Bearbeiten")
-            {
-                return Redirect("/Contact/EditContact?Id=" + id);
+                Contact contact = unit.Contacts.Get(id);
+                if (contact.CreateById == user.Id || user.Roles == "Admin" || user.Roles == "Support")
+                {
+                    return Redirect("/Contact/EditContact?Id=" + id);
+                }
             }
             return Redirect("/Contact/Index");
         }

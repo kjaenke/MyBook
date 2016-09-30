@@ -1,4 +1,5 @@
-﻿@using TestSite.Models
+﻿@using System.ServiceModel.Activation
+@using TestSite.Models
 @{
     ViewBag.Title = "RoleManager";
     User actualluser = new User();
@@ -6,11 +7,38 @@
     {
         actualluser = (User) Session["User"];
     }
+
+}
+
+
+
+@using (Html.BeginForm("SaveMail","Mail"))
+{
+    <form class="form-horizontal">
+        <fieldset>
+            <legend class="text-success">Neuer Broadcast</legend>
+            <input type="text" name="Type" value="broadcast" hidden/>
+            <input type="text" name="CreateId" value="@actualluser.Id" hidden/>
+            <input type="text" name="Subject" value="Broadcast gesetzt von @actualluser.Firstname @actualluser.Lastname" hidden/>
+            <div class="form-group">
+                <label for="inputMessage" class="col-lg-2 control-label">Broadcastmessage</label>
+                <div class="col-lg-10">
+                    <input type="text" class="form-control" rows="3" name="Message" id="iputMessage" placeholder="Neuer Broadcast"/>
+                </div>
+            </div>
+            <div class="form-group">
+                <div class="col-lg-10 col-lg-offset-2">
+                    <button type="reset" class="btn btn-default">Cancel</button>
+                    <button type="submit" class="btn btn-primary">Submit</button>
+                </div>
+            </div>
+        </fieldset>
+    </form>
 }
 
 
 <br /><br /><br />
-        @using(Html.BeginForm("DeleteUser", "User"))
+      @using(Html.BeginForm("DeleteUser", "User"))
     {
         <form class="form-horizontal">
             <fieldset>

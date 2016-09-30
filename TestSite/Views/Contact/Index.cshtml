@@ -17,204 +17,170 @@
     @*<link href="../../CSS/contactbook.css" rel="stylesheet" type="text/css"/>*@
 </head>
 <body>
+<style>
+    button {
+        width: 300px;
+    }
+</style>
 
+<fieldset>
+    <legend>Kontaktbuch</legend>
 
-
-
-
-    <fieldset>
-        <legend>Kontaktbuch</legend>
-
-        <p>
-            @Html.ActionLink("Einen neuen Kontakt erstellen.", "NewContact", "Contact")
-        </p>
-        <table style="padding: auto; margin: auto;" class="table table-striped table-hover">
-            <tr>
-                <th>Vorname</th>
-                <th>Nachname</th>
-                <th>Straße und Nr.</th>
-                <th>PLZ und Ort</th>
-                <th>Telephonnumber</th>
-                <th>eMail</th>
-                <th>Homepage</th>
-                <th  style="width: 300px;">Funktionen</th>
-            </tr>
-            @foreach (Contact c in contact)
-            {
-             
-                using (Html.BeginForm("Funktion", "Contact"))
-                {
-                    if (c.Status == 0)
-                    {
-                        <tr>
-                            <td hidden>
-                                <input type="text" name="Id" value="@c.Id" readonly/>
-                            </td>
-                            <td id="status0">
-                                @c.Firstname
-                            </td>
-                            <td id="status0">
-                                @c.Lastname
-                            </td>
-                            <td id="status0">
-                                @c.StreetHouseNumber
-                            </td>
-                            <td id="status0">
-                                @c.PlzAndOrt
-                            </td>
-                            <td id="status0">
-                                @c.TelephonNumber
-                            </td>
-                            <td id="status0">
-                                @c.EMail
-                            </td>
-                            <td id="status0">
-                                @c.Homepage
-                            </td>
-                            <td id="status0">
-                                <select name="funktion" style="float: left; width: 150px;" class="form-control">
-                                    @if (c.CreateById == user.Id || user.Roles == "Support" || user.Roles == "Admin")
-                                    {
-                                        <option>Bearbeiten</option>
-                                    }
-                                    <option>Melden</option>
-                                    @if (user.Roles == "Admin" || user.Roles == "Support")
-                                    {
-                                        <option>Sperren</option>
-                                        if (user.Roles == "Admin")
-                                        {
-                                            <option>Löschen</option>
-                                            if (c.Status == 1)
-                                            {
-                                                <option>Entsperren</option>
-                                            }
-                                        }
-                                    }
-                                </select>
-                                <button type="submit" style="width: 90px" class="btn btn-primary" style=" float: left;">Absenden</button>
-                            </td>
-                        </tr>
-                    }
-                    if (c.Status == 1 && user.Roles == "Admin")
-                    {
-                        <tr  class="danger">
-                            <td id="status1" hidden>
-                                <input type="text" name="Id" value="@c.Id" readonly/>
-                            </td>
-                            <td id="status1">
-                                @c.Firstname
-                            </td>
-                            <td id="status1">
-                                @c.Lastname
-                            </td>
-                            <td id="status1">
-                                @c.StreetHouseNumber
-                            </td>
-                            <td id="status1">
-                                @c.PlzAndOrt
-                            </td>
-                            <td id="status1">
-                                @c.TelephonNumber
-                            </td>
-                            <td id="status1">
-                                @c.EMail
-                            </td>
-                            <td id="status1">
-                                @c.Homepage
-                            </td>
-                            <td id="status1">
-                                <select name="funktion"style="float: left; width: 150px;" class="form-control">
-                                    @if (c.CreateById == user.Id || user.Roles == "Support" || user.Roles == "Admin")
-                                    {
-                                        <option>Bearbeiten</option>
-                                    }
-                                    <option>Melden</option>
-                                    @if (user.Roles == "Admin" || user.Roles == "Support")
-                                    {
-                                        <option>Sperren</option>
-                                        if (user.Roles == "Admin")
-                                        {
-                                            <option>Löschen</option>
-                                            if (c.Status == 1)
-                                            {
-                                                <option>Entsperren</option>
-                                            }
-                                        }
-                                    }
-                                </select>
-                                <button type="submit" style="width: 90px" class="btn btn-primary" style=" float: left;">Absenden</button>
-
-                            </td>
-                        </tr>
-                    }
-                    if (c.Status == 2)
-                    {
-                        <tr  class="warning">
-                            <td id="status2" hidden>
-                                <input type="text" name="Id" value="@c.Id" readonly/>
-                            </td>
-                            <td id="status2">
-                                @c.Firstname
-                            </td>
-                            <td id="status2">
-                                @c.Lastname
-                            </td>
-                            <td id="status2">
-                                @c.StreetHouseNumber
-                            </td>
-                            <td id="status2">
-                                @c.PlzAndOrt
-                            </td>
-                            <td id="status2">
-                                @c.TelephonNumber
-                            </td>
-                            <td id="status2">
-                                @c.EMail
-                            </td>
-                            <td id="status2">
-                                @c.Homepage
-                            </td>
-                            <td id="status2">
-                                <select name="funktion" style="float: left; width: 150px;" class="form-control">
-                                    @if (c.CreateById == user.Id || user.Roles == "Support" || user.Roles == "Admin")
-                                    {
-                                        <option>Bearbeiten</option>
-                                    }
-                                    <option>Melden</option>
-                                    @if (user.Roles == "Admin" || user.Roles == "Support")
-                                    {
-                                        <option>Sperren</option>
-                                        if (user.Roles == "Admin")
-                                        {
-                                            <option>Löschen</option>
-                                            if (c.Status == 1)
-                                            {
-                                                <option>Entsperren</option>
-                                            }
-                                        }
-                                    }
-                                </select>
-                                <button type="submit" class="btn btn-primary" style=" float: left;">Absenden</button>
-
-                            </td>
-                        </tr>
-                    }
-                }
-            }
-
-
-        </table>
-
-
-        @if (user.Roles == "Admin" || user.Roles == "Support")
+    <p>
+        @Html.ActionLink("Einen neuen Kontakt erstellen.", "NewContact", "Contact")
+    </p>
+    <table style="padding: auto; margin: auto;" class="table table-striped table-hover">
+        <tr>
+            <th>Vorname</th>
+            <th>Nachname</th>
+            <th>Straße und Nr.</th>
+            <th>PLZ und Ort</th>
+            <th>Telephonnumber</th>
+            <th>eMail</th>
+            <th>Homepage</th>
+            <th style="width: 700px;">Funktionen</th>
+        </tr>
+        @foreach (Contact c in contact)
         {
-            <p>
-                @Html.ActionLink("Archiv", "Archiv", "Contact")
-            </p>
+            if (c.Status == 0)
+            {
+                <tr>
+                    <td id="status0">
+                        @c.Firstname
+                    </td>
+                    <td id="status0">
+                        @c.Lastname
+                    </td>
+                    <td id="status0">
+                        @c.StreetHouseNumber
+                    </td>
+                    <td id="status0">
+                        @c.PlzAndOrt
+                    </td>
+                    <td id="status0">
+                        @c.TelephonNumber
+                    </td>
+                    <td id="status0">
+                        @c.EMail
+                    </td>
+                    <td id="status0">
+                        @c.Homepage
+                    </td>
+                    <td id="status0">
+
+                        @if (c.CreateById == user.Id || user.Roles == "Support" || user.Roles == "Admin")
+                        {
+                            <a style="width: 80px;"class="btn btn-default btn-xs" href="/Contact/Funktion?id=@c.Id&funktion=Bearbeiten">Bearbeiten</a>
+                        }
+                        <a style="width: 80px;"class="btn btn-primary btn-xs" href="/Contact/Funktion?id=@c.Id&funktion=Melden">Melden</a>
+                        @if (user.Roles == "Admin" || user.Roles == "Support")
+                        {
+                            <a style="width: 80px;"class="btn btn-warning btn-xs" href="/Contact/Funktion?id=@c.Id&funktion=Sperren">Sperren</a>
+                        }
+
+                    </td>
+                </tr>
+            }
+            if (c.Status == 1 && user.Roles == "Admin")
+            {
+                <tr class="danger">
+                    <td id="status1" hidden>
+                        <input type="text" name="Id" value="@c.Id" readonly/>
+                    </td>
+                    <td id="status1">
+                        @c.Firstname
+                    </td>
+                    <td id="status1">
+                        @c.Lastname
+                    </td>
+                    <td id="status1">
+                        @c.StreetHouseNumber
+                    </td>
+                    <td id="status1">
+                        @c.PlzAndOrt
+                    </td>
+                    <td id="status1">
+                        @c.TelephonNumber
+                    </td>
+                    <td id="status1">
+                        @c.EMail
+                    </td>
+                    <td id="status1">
+                        @c.Homepage
+                    </td>
+                    <td id="status1">
+                        @if (c.CreateById == user.Id || user.Roles == "Support" || user.Roles == "Admin")
+                        {
+                            <a style="width: 80px;"class="btn btn-default btn-xs" href="/Contact/Funktion?id=@c.Id&funktion=Bearbeiten">Bearbeiten</a>
+                        }
+                        @if (user.Roles == "Admin")
+                        {
+                                <a style="width: 80px;"class="btn btn-success btn-xs" href="/Contact/Funktion?id=@c.Id&funktion=Entsperren">Entsperren</a>
+                                <a style="width: 80px;"class="btn btn-danger btn-xs" href="/Contact/Funktion?id=@c.Id&funktion=Löschen">Löschen</a>
+                            }
+                        
+
+                    </td>
+                </tr>
+            }
+            if (c.Status == 2)
+            {
+                <tr class="warning">
+                    <td id="status2" hidden>
+                        <input type="text" name="Id" value="@c.Id" readonly/>
+                    </td>
+                    <td id="status2">
+                        @c.Firstname
+                    </td>
+                    <td id="status2">
+                        @c.Lastname
+                    </td>
+                    <td id="status2">
+                        @c.StreetHouseNumber
+                    </td>
+                    <td id="status2">
+                        @c.PlzAndOrt
+                    </td>
+                    <td id="status2">
+                        @c.TelephonNumber
+                    </td>
+                    <td id="status2">
+                        @c.EMail
+                    </td>
+                    <td id="status2">
+                        @c.Homepage
+                    </td>
+                    <td id="status2">
+                        @if (c.CreateById == user.Id || user.Roles == "Support" || user.Roles == "Admin")
+                        {
+                            <a style="width: 80px;"class="btn btn-default btn-xs" href="/Contact/Funktion?id=@c.Id&funktion=Bearbeiten">Bearbeiten</a>
+                        }
+                        @if (user.Roles == "Admin" || user.Roles == "Support")
+                        {
+                            <a style="width: 80px;"class="btn btn-warning btn-xs" href="/Contact/Funktion?id=@c.Id&funktion=Sperren">Sperren</a>
+                            if (user.Roles == "Admin")
+                            {
+                                <a style="width: 80px;"class="btn btn-danger btn-xs" href="/Contact/Funktion?id=@c.Id&funktion=Entsperren">Entsperren</a>
+                            }
+                        }
+
+                    </td>
+                </tr>
+            }
         }
 
-    </fieldset>
 
+    </table>
+
+
+    @if (user.Roles == "Admin" || user.Roles == "Support")
+    {
+        <p>
+            @Html.ActionLink("Archiv", "Archiv", "Contact")
+        </p>
+    }
+
+</fieldset>
 
 
 </body>

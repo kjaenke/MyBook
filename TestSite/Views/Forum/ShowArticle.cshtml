@@ -43,18 +43,22 @@
         <td style="width:450px">
             @if (user.Roles == "Admin" || user.Roles == "Support")
             {
-                using (Html.BeginForm("MoveTopic", "Forum"))
-                 {
-                     <input type="text" name="id" value="@topic.TopicId" hidden/>
-                     <select name="where">
-                         @foreach (Forum f in forums)
-                         {
-                             <option>@f.ForumName</option>
 
-                         }
-                     </select>
-                     <button class="btn btn-success btn-xs" type="submit">Verschieben</button>
-                 }
+                <div class="btn-group">
+                    <a href="#" class="btn btn-primary btn-xs">Forum verschieben</a>
+                    <a href="#" class="btn btn-primary btn-xs dropdown-toggle" data-toggle="dropdown" aria-expanded="false"><span class="caret"></span></a>
+
+                    <ul class="dropdown-menu btn-xs">
+                        @foreach (Forum f in forums)
+                        {
+
+                            <li><a style="color: white;" href="/Forum/MoveTopic?id=@topic.TopicId&where=@f.ForumName">@f.ForumName</a></li>
+
+                        }
+                    </ul>
+                </div>
+
+
             }
         </td>
     </tr>
