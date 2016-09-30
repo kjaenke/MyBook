@@ -119,18 +119,19 @@ namespace TestSite.Controllers
             return Redirect("/User/Login");
         }
 
-        public ActionResult Profiles(string id)
+        public ActionResult Profiles(string id, string act = "0")
         {
-            User user = new User();
-            if (Session["User"] != null)
+            if (act != "0")
             {
-                user = (User) Session["User"];
-            }
-            if (id == null)
-            {
-                if (user.Id != null)
+                User user = new User();
+                if (Session["User"] != null)
+                {
+                    user = (User)Session["User"];
+                }
+                if (user.Mail != null)
                 {
                     ViewData["UserId"] = user.Id;
+                    ViewData["UserListOption"] = act;
                     return View();
                 }
                 else
@@ -138,31 +139,80 @@ namespace TestSite.Controllers
                     return View("UserList");
                 }
             }
-            UnitOfWork unit = new UnitOfWork(new PlutoContext());
-
-            if (unit.Users.Get(id.AsInt()) == null)
+            else
             {
-                return View("UserList");
+                User user = new User();
+                if (Session["User"] != null)
+                {
+                    user = (User) Session["User"];
+                }
+                if (id == null)
+                {
+                    if (user.Id != null)
+                    {
+                        ViewData["UserId"] = user.Id;
+                        return View();
+                    }
+                    else
+                    {
+                        return View("UserList");
+                    }
+                }
+                UnitOfWork unit = new UnitOfWork(new PlutoContext());
+
+                if (unit.Users.Get(id.AsInt()) == null)
+                {
+                    return View("UserList");
+                }
+                ViewData["UserId"] = id.AsInt();
+                return View();
             }
-            ViewData["UserId"] = id.AsInt();
-            return View();
         }
 
-        public ActionResult ChangePassword()
+        public ActionResult ChangePassword(string id, string passwordNew, string passwordRepeat)
         {
-            return View();
+
+            if (passwordNew != passwordRepeat)
+            {
+                return Redirect("/User/Profiles?id="+id+"&act=1.5");
+            }
+            UnitOfWork unit = new UnitOfWork(new PlutoContext());
+            User user = unit.Users.Get(id.AsInt());
+            byte[] data = Encoding.ASCII.GetBytes(passwordNew);
+            MD5CryptoServiceProvider md5 = new MD5CryptoServiceProvider();
+            byte[] md5Data = md5.ComputeHash(data);
+            user.Password = Encoding.ASCII.GetString(md5Data);
+            unit.Users.Add(user);
+            unit.Complete();
+            return Redirect("/User/Profiles?id="+id+"&act=1.7");
         }
 
         public ActionResult DeleteUser(string mail)
         {
-            UnitOfWork unit = new UnitOfWork(new PlutoContext());
-            unit.Users.RemoveUser(mail);
-            User result = unit.Users.FindMail(mail);
-            string stat = result == null ? "true" : "false";
-            unit.Complete();
+            User user = new User();
+            if (Session["User"] != null)
+            {
+                user = (User) Session["User"];
 
-            Session["stat"] = stat;
-            return View("RoleManager");
+            }
+            if (user.Mail == mail || user.Roles == "Admin")
+            {
+                UnitOfWork unit = new UnitOfWork(new PlutoContext());
+                User result = unit.Users.FindMail(mail);
+                result.Mail = "-----------";
+                result.Phonenumber = "";
+                result.Firstname = "Gelöschter";
+                result.Lastname = "Nutzer";
+                result.Salutation = "------";
+                result.Password = "jfjaejkakfnaejfkaefluahzlenafewe";
+                unit.Users.Add(result);
+                unit.Complete();
+                if (user.Mail == mail)
+                {
+                    return Redirect("/User/LogOut");
+                }
+            }
+            return Redirect("/Forum/Index");
         }
 
         public ActionResult UserList()

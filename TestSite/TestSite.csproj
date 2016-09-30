@@ -334,6 +334,7 @@
     <Content Include="Views\Mail\Intern.cshtml" />
     <Content Include="Views\Forum\EditForum.cshtml" />
     <Content Include="Views\Forum\EditTopic.cshtml" />
+    <Content Include="Views\Mail\Ticket.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="App_Data\" />

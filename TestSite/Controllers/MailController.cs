@@ -153,5 +153,19 @@ namespace TestSite.Controllers
             }
             return Redirect("/Mail/Index");
         }
+
+        public ActionResult Ticket()
+        {
+            User user = new User();
+            if (Session["User"] != null)
+            {
+                user = (User) Session["User"];
+            }
+            if (user.Mail == null)
+            {
+                return Redirect("/Forum/Index");
+            }
+            return View();
+        }
     }
 }

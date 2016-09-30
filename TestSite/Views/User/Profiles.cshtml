@@ -2,51 +2,148 @@
 @using TestSite.Models
 @using TestSite.Persistence
 @{
-    
+
     UnitOfWork unit = new UnitOfWork(new PlutoContext());
     int id = (int) ViewData["UserId"];
+    string option = (string) ViewData["UserListOption"];
     User actualluser = unit.Users.Get(id);
     ViewBag.Title = actualluser.Firstname;
 }
+@if (option == "1.7")
+{
+    <div class="alert alert-success fade in" name="NoMail">
+        <a href="#" class="close" data-dismiss="alert" aria-label="close">&times;</a>
+        Ihr Passwort wurde erfolgreich geändert.
+    </div>
+}
+<h2>Mein Profil:</h2>
+
+<table class="table table-striped table-hover ">
+    <tr>
+        <td rowspan="5" style="width: 160px; height: 160px; text-align: center;">
+            <img src="../../src/images.jpg"/>
+        </td>
+        @if (actualluser.Roles == "Admin")
+        {
+            <td>@actualluser.Roles</td>
+        }
+        @if (actualluser.Roles == "Support")
+        {
+            <td>@actualluser.Roles</td>
+        }
+        @if (actualluser.Roles == "User")
+        {
+            <td>@actualluser.Roles</td>
+        }
+    </tr>
 
 
-    <h2>Mein Profil:</h2>
+    <tr>
+        <td>@actualluser.Salutation</td>
+    </tr>
 
-    <table class="table table-striped table-hover ">
-        <tr>
-            <td rowspan="5" style=" width: 160px; height: 160px; text-align: center;">
-                <img src="../../src/images.jpg"/>
-            </td>
-            @if (actualluser.Roles == "Admin")
-            {
-                <td>@actualluser.Roles</td>
-            }
-            @if (actualluser.Roles == "Support")
-            {
-                <td>@actualluser.Roles</td>
-            }
-            @if (actualluser.Roles == "User")
-            {
-                <td>@actualluser.Roles</td>
-            }
-        </tr>
+    <tr>
 
+        <td>@actualluser.Firstname @actualluser.Lastname</td>
+    </tr>
+    <tr>
 
-        <tr>
-            <td>@actualluser.Salutation</td>
-        </tr>
+        <td>@actualluser.Mail</td>
+    </tr>
+    <tr>
+        <td>@actualluser.Phonenumber</td>
+    </tr>
 
-        <tr>
+</table>
 
-            <td>@actualluser.Firstname @actualluser.Lastname</td>
-        </tr>
-        <tr>
+<div class="btn-group btn-lg btn-block">
+    <a href="#" class="btn btn-default btn-lg btn-block">Einstellungen</a>
+    <a href="#" class="btn btn-default dropdown-togglebtn-lg btn-block" data-toggle="dropdown" aria-expanded="false">
+        <span class="caret"></span></a>
+    <ul class="dropdown-menu btn-lg btn-block">
+        <li>
+            <a href="/User/Profiles?id=@actualluser.Id&act=1">Passwort ändern</a>
+        </li>
+        <li>
+            <a href="#">Another action</a>
+        </li>
+        <li>
+            <a href="#">Something else here</a>
+        </li>
+        <li class="divider"></li>
+        <li>
+            <a href="/User/Profiles?id=@actualluser.Id&act=2">Account löschen</a>
+        </li>
+    </ul>
+</div>
 
-            <td>@actualluser.Mail</td>
-        </tr>
-        <tr>
-            <td>@actualluser.Phonenumber</td>
-        </tr>
+@if (option == "1")
+{
+    using (Html.BeginForm("ChangePassword", "User"))
+    {
+        <form class="form-horizontal">
+            <fieldset>
+                <legend>Passwort ändern</legend>
+                <input type="text" value="@actualluser.Id" hidden name="id"/>
+                <div class="form-group">
+                    <label for="inputPassword" class="col-lg-2 control-label">Password</label>
+                    <div class="col-lg-10">
+                        <input type="password" class="form-control" id="inputPassword" name="passwordNew" placeholder="Password"/>
+                    </div>
+                </div>
+                <div class="form-group">
+                    <label for="passwordRepeat" class="col-lg-2 control-label">Password wiederholen</label>
+                    <div class="col-lg-10">
+                        <input type="password" class="form-control" id="passwordRepeat" name="passwordRepeat" placeholder="Password"/>
+                    </div>
+                </div>
+                <div class="form-group">
+                    <div class="col-lg-10 col-lg-offset-2">
+                        <button type="reset" class="btn btn-default">Cancel</button>
+                        <button type="submit" class="btn btn-primary">Ändern</button>
+                    </div>
+                </div>
+            </fieldset>
+        </form>
+    }
+}
+@if (option == "1.5")
+{
+    using (Html.BeginForm("ChangePassword", "User"))
+    {
+        <form class="form-horizontal">
+            <fieldset>
+                <input type="text" value="@actualluser.Id" hidden name="id"/>
+                <div class="alert alert-warning fade in" name="NoMail">
+                    <a href="#" class="close" data-dismiss="alert" aria-label="close">&times;</a>
+                    <strong>Achtung!</strong> Die Passwörter stimmen nicht überein.
+                </div>
+                <legend>Passwort ändern</legend>
+                <div class="form-group has-error">
+                    <label for="inputPassword" class="col-lg-2 control-label">Password</label>
+                    <div class="col-lg-10">
+                        <input type="password" class="form-control" id="inputPassword" name="passwordNew" placeholder="Password"/>
+                    </div>
+                </div>
+                <div class="form-group has-error">
+                    <label for="passwordRepeat" class="col-lg-2 control-label">Password wiederholen</label>
+                    <div class="col-lg-10">
+                        <input type="password" class="form-control" id="passwordRepeat" name="passwordRepeat" placeholder="Password"/>
+                    </div>
+                </div>
+                <div class="form-group">
+                    <div class="col-lg-10 col-lg-offset-2">
+                        <button type="reset" class="btn btn-default">Cancel</button>
+                        <button type="submit" class="btn btn-primary">Ändern</button>
+                    </div>
+                </div>
 
-
-    </table>
+            </fieldset>
+        </form>
+    }
+}
+@if (option == "2")
+{
+    <p class="text-danger" style="margin: auto; text-align: center;" >Sind Sie sich sicher, dass Sie ihren Account löschen wollen? Es gibt keine Möglichkeit diesen wieder zu erlangen.</p>
+    <a style="margin: auto; text-align: center;" class="btn btn-danger" href="/User/DeleteUser?mail=@actualluser.Mail">Ja, ich bin mir sicher.</a>
+}

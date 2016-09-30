@@ -49,7 +49,7 @@ namespace TestSite.Controllers
                     UnitOfWork unit = new UnitOfWork(new PlutoContext());
                     BackgroundJob.Enqueue(() => message.NewAction("KONTAKT GEMELDET",
                         "Der Kontakt mit der ID: " + id +
-                        ", wurde soeben gemeldet. Nach Bearbeitung muss diese Mail gelöscht werden." + DateTime.Now.ToString()));
+                        ", wurde soeben von"+user.Firstname+" "+user.Lastname +" gemeldet.  //" + DateTime.Now.ToString()));
 
                     unit.Contacts.ChangeStatus(id, 2);
                     return Redirect("/Contact/Index");

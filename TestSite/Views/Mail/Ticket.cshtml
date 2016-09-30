@@ -1,0 +1,44 @@
+﻿@using TestSite.Models
+@{
+    ViewBag.Title = "Neues Ticket";
+    User user = new User();
+    if (Session["User"] != null)
+    {
+        user = (User) Session["User"];
+    }
+}
+
+<div class="panel panel-danger" style="text-align: center">
+    <div class="panel-heading">
+        <h3 class="panel-title">Achtung</h3>
+    </div>
+    <div class="panel-body" style="text-align: center">
+        Der Missbrauch des Ticketsystems ist untersagt.
+        Bei Verstoß folgen dem entsprechende Strafen.
+    </div>
+</div>
+@using (Html.BeginForm("SaveMail", "Mail"))
+{
+    <input type="text" hidden   name="Type" value="system"/>
+    <input type="text" hidden  name="Subject" value="TICKET VON @user.Firstname @user.Lastname">
+
+
+<form class="form-horizontal">
+    <fieldset>
+        <legend>Neues Ticket</legend>
+        <div class="form-group">
+            <label for="textArea" class="col-lg-2 control-label">Ticket-Nachricht</label>
+            <div class="col-lg-10">
+                <textarea class="form-control" name="Message" rows="10" id="textArea"></textarea>
+            </div>
+        </div>
+        <input hidden type="text" name="CreateId" value="@user.Id"/>
+        <input hidden type="text" name="IsRead" value="false"/>
+        <div class="form-group">
+            <div class="col-lg-10 col-lg-offset-2">
+                <button type="reset" class="btn btn-default">Abbrechen</button>
+                <button type="submit" class="btn btn-primary">Abschicken</button>
+            </div>
+        </div>
+    </fieldset>
+</form>}

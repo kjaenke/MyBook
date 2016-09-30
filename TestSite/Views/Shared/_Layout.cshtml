@@ -94,8 +94,12 @@
                         <li><a href="/User/Profiles?id=@actualluser.Id">||@actualluser.Firstname||</a></li>
                     }
 
-                    <li>@Html.ActionLink("Kontaktbuch", "Index", "Contact")</li>
-                    <li>@Html.ActionLink(mailstatus, "Index", "Mail")</li>
+                    <li><a href="/Contact/Index">Kontaktbuch</a></li>
+                    <li><a href="/Mail/Index">@mailstatus</a></li>
+                    if (actualluser.Roles == "User")
+                    {
+                        <li><a href="/Mail/Ticket">Ticket</a></li>
+                    }
                 }
                 <li>@Html.ActionLink("Mitglieder", "UserList", "User")</li>
                 <li>@Html.ActionLink("Forum", "Index", "Forum")</li>
